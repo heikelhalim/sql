@@ -5,6 +5,7 @@ DROP TABLE IF EXISTS admin_master_password_history;
 DROP TABLE IF EXISTS admin_account_master;
 DROP TABLE IF EXISTS admin_account_password_history;
 DROP TABLE IF EXISTS admin_locked_out;
+DROP TABLE IF EXISTS mutex;
 
 /* Create Tables */
 
@@ -57,6 +58,18 @@ CREATE TABLE admin_locked_out
     PRIMARY KEY (id)
 ) WITHOUT OIDS;
 
+CREATE TABLE mutex
+(
+    id int NOT NULL,
+    name varchar(20) NOT NULL,
+    created_at timestamp,
+    created_by varchar(256),
+    updated_at timestamp,
+    updated_by varchar(256),
+    update_version int NOT NULL,
+    PRIMARY KEY (id)
+) WITHOUT OIDS;
+
 /* Create Foreign Keys */
 
 ALTER TABLE admin_account_password_history
@@ -72,3 +85,6 @@ ALTER TABLE admin_locked_out
     ON UPDATE RESTRICT
     ON DELETE RESTRICT
 ;
+
+/* This is query for mutex table */
+INSERT INTO mutex (id, name, update_version) VALUES (1, 'admin', 0);
