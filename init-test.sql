@@ -1,5 +1,7 @@
 /* Drop Tables */
 
+DROP TABLE IF EXISTS calendar_event;
+
 DROP TABLE IF EXISTS admin_master;
 DROP TABLE IF EXISTS admin_master_password_history;
 DROP TABLE IF EXISTS admin_account_master;
@@ -70,6 +72,27 @@ CREATE TABLE mutex
     PRIMARY KEY (id)
 ) WITHOUT OIDS;
 
+
+CREATE TABLE calendar_event(
+id varchar(32) NOT NULL, 
+account_id varchar(32) NOT NULL,
+event_title varchar(64) NOT NULL,
+StartDate timestamp,
+StartTime timestamp,
+EndDate timestamp,
+EndTIme timestamp,
+event_location varchar(64),
+event_note varchar (256),
+created_at timestamp,
+created_by varchar(256),
+updated_at timestamp,
+updated_by varchar(256),
+update_version int NOT NULL,
+PRIMARY KEY (id)
+) WITHOUT OIDS;
+
+
+
 /* Create Foreign Keys */
 
 ALTER TABLE admin_account_password_history
@@ -80,6 +103,13 @@ ALTER TABLE admin_account_password_history
 ;
 
 ALTER TABLE admin_locked_out
+    ADD FOREIGN KEY (account_id)
+    REFERENCES admin_account_master (id)
+    ON UPDATE RESTRICT
+    ON DELETE RESTRICT
+;
+
+ALTER TABLE calendar_event
     ADD FOREIGN KEY (account_id)
     REFERENCES admin_account_master (id)
     ON UPDATE RESTRICT
